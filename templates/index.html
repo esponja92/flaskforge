@@ -7,22 +7,26 @@
             <tr>
                 <th>Primeiro nome</th>
                 <th>Último nome</th>
+                <th>Ação</th>
             </tr>
             {% for pessoa in pessoas %}
             <tr>
                 <td>{{ pessoa['fname'] }}</td>
                 <td>{{ pessoa['lname'] }}</td>
+                <td>
+                    <a href="{{ url_for('editar', id=pessoa['id']) }}">Editar</a>
+                </td>
             </tr>
             {% endfor %}
         </table>
 
-    <h2>HTML Forms</h2>
+    <h2>Cadastro de novos usuários</h2>
 
-    <form action="/formulario" method="post">
+    <form action="/cadastrar" method="post">
     <label for="fname">First name:</label><br>
-    <input type="text" id="fname" name="fname" value="John"><br>
+    <input type="text" id="fname" name="fname" value="" required><br>
     <label for="lname">Last name:</label><br>
-    <input type="text" id="lname" name="lname" value="Doe"><br><br>
+    <input type="text" id="lname" name="lname" value="" required><br><br>
     <input type="submit" value="Submit">
     </form> 
 

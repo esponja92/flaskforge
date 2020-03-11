@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <body>
+            <h2>Edição de usuário</h2>
+
+            <form action="/atualizar" method="post">
+                <input type="hidden" id="id" name="id" value={{ pessoa['id'] }}><br>
+                <label for="fname">First name:</label><br>
+                <input type="text" id="fname" name="fname" value={{ pessoa['fname'] }}><br>
+                <label for="lname">Last name:</label><br>
+                <input type="text" id="lname" name="lname" value={{ pessoa['lname'] }}><br>
+                <input type="submit" value="Submit">
+            </form> 
+    </body>
+</html>

@@ -26,8 +26,8 @@ def index():
         
     return render_template('index.html', pessoas=pessoas)
 
-@app.route('/formulario', methods=['POST'])
-def formulario():
+@app.route('/cadastrar', methods=['POST'])
+def cadastrar():
     fname = request.form.get('fname')
     lname = request.form.get('lname')
 
@@ -37,6 +37,32 @@ def formulario():
             cur = con.cursor()
 
             cur.execute("INSERT INTO pessoa (fname,lname) VALUES (?,?)", (fname,lname))
+            con.commit()
+
+        return render_template('sucesso.html')
+    except Exception as e:
+        return render_template('erro.html', erro=str(e))
+
+@app.route('/editar', methods=['GET'])
+def editar():
+    id = request.args.get('id')
+    pessoa = query_db("SELECT * FROM pessoa WHERE id = ?", id, one=True)
+
+    return render_template('edit.html', pessoa=pessoa)
+
+@app.route('/atualizar', methods=['POST'])
+def atualizar():
+
+    id = request.form.get('id')
+    fname = request.form.get('fname')
+    lname = request.form.get('lname')
+
+    try:
+
+        with sql.connect("database.db") as con:
+            cur = con.cursor()
+
+            cur.execute("UPDATE pessoa SET fname = ?, lname = ? WHERE id = ?", (fname,lname,id))
             con.commit()
 
         return render_template('sucesso.html')

@@ -36,6 +36,8 @@ def create():
         sql = 'CREATE TABLE ' + nome_tabela + '('
         if len(nomes_campo) != len(tipos_campo):
             raise Exception("A quantidade de nomes de campos e tipos informados não estão iguais")
+
+        sql = sql + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             
         for i in range(len(nomes_campo)):
             sql = sql + nomes_campo[i] + " "
@@ -69,9 +71,9 @@ def create():
 if __name__ == "__main__":
     print("Selecione a operação que deseja realizar:")
     print("1 - criar uma nova tabela")
+    #print("4 - consultar registros em uma tabela criada")
     #print("2 - inserir registros em uma tabela criada")
     #print("3 - atualizar registros em uma tabela criada")
-    #print("4 - consultar registros em uma tabela criada")
     #print("5 - remover registros em uma tabela criada")
 
     opcao = input("Digite a opção: ")
