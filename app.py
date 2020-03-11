@@ -19,6 +19,11 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+def execute(query, args):
+    db = get_db()
+    db.execute(query, args)
+    db.commit()
+
 @app.route("/")
 def index():
 
@@ -33,11 +38,7 @@ def cadastrar():
 
     try:
 
-        with sql.connect("database.db") as con:
-            cur = con.cursor()
-
-            cur.execute("INSERT INTO pessoa (fname,lname) VALUES (?,?)", (fname,lname))
-            con.commit()
+        execute("INSERT INTO pessoa (fname,lname) VALUES (?,?)", (fname,lname))
 
         return render_template('sucesso.html')
     except Exception as e:
@@ -59,10 +60,23 @@ def atualizar():
 
     try:
 
+        execute("UPDATE pessoa SET fname = ?, lname = ? WHERE id = ?", (fname,lname,id))
+
+        return render_template('sucesso.html')
+    except Exception as e:
+        return render_template('erro.html', erro=str(e))
+
+@app.route('/deletar', methods=['POST'])
+def deletar():
+
+    id = request.form.get('id')
+
+    try:
+
         with sql.connect("database.db") as con:
             cur = con.cursor()
 
-            cur.execute("UPDATE pessoa SET fname = ?, lname = ? WHERE id = ?", (fname,lname,id))
+            cur.execute("DELETE FROM pessoa WHERE id = ?", id)
             con.commit()
 
         return render_template('sucesso.html')
