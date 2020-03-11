@@ -2,6 +2,20 @@
 <html>
     <body>
 
+        <h2> Lista das pessoas cadastradas até o momento: </h2>
+        <table border = 1>
+            <tr>
+                <th>Primeiro nome</th>
+                <th>Último nome</th>
+            </tr>
+            {% for pessoa in pessoas %}
+            <tr>
+                <td>{{ pessoa['fname'] }}</td>
+                <td>{{ pessoa['lname'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
     <h2>HTML Forms</h2>
 
     <form action="/formulario" method="post">

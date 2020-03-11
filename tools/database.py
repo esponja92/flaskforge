@@ -31,7 +31,7 @@ def create():
 
     #criando a tabela
     try:
-        conn = sqlite3.connect('database.db')
+        conn = sqlite3.connect('../database.db')
 
         sql = 'CREATE TABLE ' + nome_tabela + '('
         if len(nomes_campo) != len(tipos_campo):
@@ -69,10 +69,10 @@ def create():
 if __name__ == "__main__":
     print("Selecione a operação que deseja realizar:")
     print("1 - criar uma nova tabela")
-    print("2 - inserir registros em uma tabela criada")
-    print("3 - atualizar registros em uma tabela criada")
-    print("4 - consultar registros em uma tabela criada")
-    print("5 - remover registros em uma tabela criada")
+    #print("2 - inserir registros em uma tabela criada")
+    #print("3 - atualizar registros em uma tabela criada")
+    #print("4 - consultar registros em uma tabela criada")
+    #print("5 - remover registros em uma tabela criada")
 
     opcao = input("Digite a opção: ")
 
