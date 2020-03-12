@@ -1,13 +1,13 @@
 from project import app
 from flask import render_template, redirect, url_for, request
-from database import Database
+from project.repository.database_pessoa import DatabasePessoa
 
-db = Database()
+db = DatabasePessoa()
 
 @app.route("/")
 def index():
 
-    pessoas = db.obtem('pessoa')
+    pessoas = db.obtem()
         
     return render_template('index.html', pessoas=pessoas)
 
@@ -18,7 +18,7 @@ def cadastrar():
 
     try:
 
-        db.insere("pessoa", ['fname', 'lname'], [fname, lname])
+        db.insere(['fname', 'lname'], [fname, lname])
 
         return render_template('sucesso.html')
     except Exception as e:
@@ -27,7 +27,7 @@ def cadastrar():
 @app.route('/editar', methods=['GET'])
 def editar():
     id = request.args.get('id')
-    pessoa = db.obtem('pessoa', colunas="*", where_colunas=['id'], where_valores=[id], one=True)
+    pessoa = db.obtem(colunas="*", where_colunas=['id'], where_valores=[id], one=True)
 
     return render_template('edit.html', pessoa=pessoa)
 
@@ -40,7 +40,7 @@ def atualizar():
 
     try:
 
-        db.atualiza("pessoa", ['fname', 'lname'], [fname, lname],['id'], [id])
+        db.atualiza(['fname', 'lname'], [fname, lname],['id'], [id])
 
         return render_template('sucesso.html')
     except Exception as e:
@@ -53,7 +53,7 @@ def deletar():
 
     try:
 
-        db.deleta('pessoa', where_colunas = ["id"], where_valores = [id])
+        db.deleta(where_colunas = ["id"], where_valores = [id])
 
         return render_template('sucesso.html')
     except Exception as e:
