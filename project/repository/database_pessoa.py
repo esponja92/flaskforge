@@ -28,7 +28,7 @@ class DatabasePessoa(object):
         db.execute(query, args)
         db.commit()
 
-    def insere(colunas, valores):
+    def insere(self, colunas, valores):
         query_sql = "INSERT INTO " + self.tabela + " ("
         
         values_sql = ''
