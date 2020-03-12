@@ -1,7 +1,7 @@
-from flask import *
+from project import app
+from flask import render_template, redirect, url_for, request
 from database import Database
 
-app = Flask(__name__)
 db = Database()
 
 @app.route("/")
@@ -58,7 +58,8 @@ def deletar():
         return render_template('sucesso.html')
     except Exception as e:
         return render_template('erro.html', erro=str(e))
-
+'''
 if __name__ == "__main__":
     app.debug = True
     app.run()
+'''

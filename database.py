@@ -11,9 +11,9 @@ class Database(object):
     def get_db(self):
 
         if self.db is None:
-            self.db = sql.connect(self.DATABASE)
+            self.db = sql.connect(self.DATABASE, check_same_thread=False)
+            self.db.row_factory = sql.Row
 
-        self.db.row_factory = sql.Row
         return self.db
 
     def query_db(self, query, args=(), one=False):
