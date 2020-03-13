@@ -8,18 +8,23 @@ class Model(object):
     tabela = ''
     campo_id = ''
 
-    def __init__(self):
+    def __init__(self, valores=''):
         self.db = Database()
 
-    def obter(self, query_sql =''):
+    def obter(self, query_sql ='', one=False, header=False):
         if(query_sql == ''):
             query_sql = 'SELECT ' + ','.join(self.atributos) + ' FROM '+self.tabela
 
-        resultado = self.db.query_db(query_sql)
-        return resultado
+        rows = self.db.query_db(query_sql, (), one, header)
+        lista_resultados = []
+        for row in rows[1::]:
+            model = self.__class__([i for i in row])
+            lista_resultados.append(model)
+
+        return lista_resultados
 
     def obterPorId(self, id):
-        pessoa = self.obter('SELECT * FROM '+self.tabela+' WHERE id = '+id)[0]
+        pessoa = self.obter()[0]
 
         return pessoa
 

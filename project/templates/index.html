@@ -11,8 +11,8 @@
                 </tr>
                 {% for pessoa in pessoas %}
                 <tr>
-                    <td>{{ pessoa['fname'] }}</td>
-                    <td>{{ pessoa['lname'] }}</td>
+                    <td>{{ pessoa['campo_fname'] }}</td>
+                    <td>{{ pessoa['campo_lname'] }}</td>
                     <td>
                         <a href="{{ url_for('editar', id=pessoa['id']) }}">Editar</a>
                     </td>

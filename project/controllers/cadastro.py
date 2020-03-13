@@ -8,7 +8,7 @@ db = DatabasePessoa()
 @app.route("/")
 def index():
 
-    pessoas = db.obtem()
+    pessoas = Pessoa().obter()
         
     return render_template('index.html', pessoas=pessoas)
 
