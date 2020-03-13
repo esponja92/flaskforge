@@ -30,7 +30,7 @@ def cadastrar():
 @app.route('/editar', methods=['GET'])
 def editar():
     id = request.args.get('id')
-    pessoa = db.obtem(colunas="*", where_colunas=['id'], where_valores=[id], one=True)
+    pessoa = Pessoa().obterPorId(id)
 
     return render_template('edit.html', pessoa=pessoa)
 
@@ -42,8 +42,11 @@ def atualizar():
     lname = request.form.get('lname')
 
     try:
-
-        db.atualiza(['fname', 'lname'], [fname, lname],['id'], [id])
+        pessoa = Pessoa()
+        pessoa.campo_id = id
+        pessoa.campo_fname = fname
+        pessoa.campo_lname = lname
+        pessoa.atualizar()
 
         return render_template('sucesso.html')
     except Exception as e:
@@ -61,8 +64,3 @@ def deletar():
         return render_template('sucesso.html')
     except Exception as e:
         return render_template('erro.html', erro=str(e))
-'''
-if __name__ == "__main__":
-    app.debug = True
-    app.run()
-'''
