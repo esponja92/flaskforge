@@ -1,6 +1,7 @@
 from project import app
 from flask import render_template, redirect, url_for, request
 from project.repository.database_pessoa import DatabasePessoa
+from project.models.pessoa import Pessoa
 
 db = DatabasePessoa()
 
@@ -17,8 +18,10 @@ def cadastrar():
     lname = request.form.get('lname')
 
     try:
-
-        db.insere(['fname', 'lname'], [fname, lname])
+        pessoa = Pessoa()
+        pessoa.campo_fname = fname
+        pessoa.campo_lname = lname
+        pessoa.criar()
 
         return render_template('sucesso.html')
     except Exception as e:
