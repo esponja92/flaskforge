@@ -11,20 +11,27 @@ class Model(object):
     def __init__(self, valores=''):
         self.db = Database()
 
-    def obter(self, query_sql ='', one=False, header=False):
+    def obter(self, query_sql ='', args=(), one=False):
         if(query_sql == ''):
             query_sql = 'SELECT ' + ','.join(self.atributos) + ' FROM '+self.tabela
 
-        rows = self.db.query_db(query_sql, (), one, header)
-        lista_resultados = []
-        for row in rows[1::]:
-            model = self.__class__([i for i in row])
-            lista_resultados.append(model)
+        rows = self.db.query_db(query_sql, args, one, header=False)
 
-        return lista_resultados
+        if(one):
+            model = self.__class__([i for i in rows])
+            return model
+
+        else:
+            lista_resultados = []
+            for row in rows:
+
+                model = self.__class__([i for i in row])
+                lista_resultados.append(model)
+            
+            return lista_resultados
 
     def obterPorId(self, id):
-        pessoa = self.obter()[0]
+        pessoa = self.obter('SELECT * FROM '+self.tabela+' WHERE id = ?',(id),one=True)
 
         return pessoa
 

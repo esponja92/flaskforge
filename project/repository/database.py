@@ -18,10 +18,16 @@ class Database(object):
 
     def query_db(self, query, args=(), one=False, header=False):
 
+        if (args != ()):
+            args = (args,)
+
         cur = self.get_db().execute(query, args)
         cabecalho = [description[0] for description in cur.description]
         linhas = [row for row in cur.fetchall()]
-        rv = [cabecalho] + linhas
+        if(header):
+            rv = [cabecalho] + linhas
+        else:
+            rv = linhas
         cur.close()
         return (rv[0] if rv else None) if one else rv
 
