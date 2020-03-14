@@ -1,7 +1,4 @@
-
-import sys
-sys.path.append('../')
-from models.pessoa import Pessoa
+from project.models.pessoa import Pessoa
 
 def insere_pessoa_no_banco_test():
     pessoa = Pessoa()
@@ -35,10 +32,3 @@ def obter_pessoas_id():
     print(pessoa)
 
     print("#------------------------------------#")
-
-if __name__ == "__main__":
-
-    # insere_pessoa_no_banco_test()
-    obter_todas_pessoas()
-    # obter_pessoas_id()
-    # obter_pessoa_por_campos()

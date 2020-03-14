@@ -2,12 +2,7 @@ import sqlite3 as sql
 import os
 from .database_singleton import DatabaseSingleton
 
-try:
-    from project.config.env import *
-except ImportError:
-    import sys
-    sys.path.append('../')
-    from config.env import *
+from project.config.env import *
 
 @DatabaseSingleton
 class Database(object):
@@ -51,4 +46,4 @@ class Database(object):
         db = self.get_db()
         db.execute(query, args)
         db.commit()
-        self.close_db(cur)
+        self.close_db(db)

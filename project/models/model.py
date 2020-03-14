@@ -1,11 +1,6 @@
 import sqlite3 as sql
 
-try:
-    from project.repository.database import Database
-except ImportError:
-    import sys
-    sys.path.append('../')
-    from repository.database import Database
+from project.repository.database import Database
 
 class Model(object):
 
