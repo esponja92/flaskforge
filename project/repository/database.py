@@ -1,5 +1,6 @@
 import sqlite3 as sql
 import os
+from .database_singleton import DatabaseSingleton
 
 try:
     from project.config.env import *
@@ -8,13 +9,14 @@ except ImportError:
     sys.path.append('../')
     from config.env import *
 
+@DatabaseSingleton
 class Database(object):
 
     DATABASE = DATABASE_PATH
     db = None
 
     def __init__(self):
-        print(os.path.abspath(self.DATABASE))
+        pass
 
     def get_db(self):
 
@@ -23,6 +25,10 @@ class Database(object):
             self.db.row_factory = sql.Row
 
         return self.db
+
+    def close_db(self, cur):
+        cur.close()
+        self.db = None
 
     def query_db(self, query, args=(), one=False, header=False):
 
@@ -35,7 +41,8 @@ class Database(object):
             rv = [cabecalho] + linhas
         else:
             rv = linhas
-        cur.close()
+
+        self.close_db(cur)
 
         return rv
 

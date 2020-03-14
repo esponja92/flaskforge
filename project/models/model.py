@@ -15,7 +15,7 @@ class Model(object):
     campo_id = ''
 
     def __init__(self, valores=''):
-        self.db = Database()
+        self.db = Database.getInstance()
 
     def __str__(self):
         stringify = ''
