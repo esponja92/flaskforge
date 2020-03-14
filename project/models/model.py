@@ -52,11 +52,11 @@ class Model(object):
 
         self.db.execute(query_sql, valores)
 
-    def atualizar(self, query_sql=''):
-        atributos_sem_id = [a for a in self.atributos]
-        atributos_sem_id.remove('id')
+    def atualizar(self, query_sql='', valores=[]):
 
         if(query_sql == ''):
+            atributos_sem_id = [a for a in self.atributos]
+            atributos_sem_id.remove('id')
             query_sql = 'UPDATE ' + self.tabela + ' SET '
             
             campos = [k for k in atributos_sem_id]
@@ -70,4 +70,23 @@ class Model(object):
             valores.append(self.__dict__['campo_'+campos[-1]])
             valores.append(self.campo_id)
 
+        self.db.execute(query_sql, valores)
+
+    def deletar(self, query_sql='', valores=[]):
+
+        valores = []
+        if(query_sql == ''):
+            query_sql = 'DELETE FROM '+self.tabela+' WHERE '
+
+            campos = [k for k in self.atributos]
+
+            for campo in campos[0:-1]:
+                query_sql += campo + ' = ? AND '
+                valores.append(self.__dict__['campo_'+campo])
+            
+            query_sql += campos[-1] + ' = ?'
+            valores.append(self.__dict__['campo_'+campos[-1]])
+
+        print(query_sql)
+        print(valores)
         self.db.execute(query_sql, valores)

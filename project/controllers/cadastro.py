@@ -1,9 +1,7 @@
 from project import app
 from flask import render_template, redirect, url_for, request
-from project.repository.database_pessoa import DatabasePessoa
 from project.models.pessoa import Pessoa
 
-db = DatabasePessoa()
 
 @app.route("/")
 def index():
@@ -59,7 +57,8 @@ def deletar():
 
     try:
 
-        db.deleta(where_colunas = ["id"], where_valores = [id])
+        pessoa = Pessoa().obterPorId(id)
+        pessoa.deletar()
 
         return render_template('sucesso.html')
     except Exception as e:
