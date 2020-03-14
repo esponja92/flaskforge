@@ -1,4 +1,9 @@
-from project.models.model import Model
+try:
+    from project.models.model import Model
+except ImportError:
+    import sys
+    sys.path.append('./')
+    from .model import Model
 
 class Pessoa(Model):
 

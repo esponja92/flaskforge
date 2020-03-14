@@ -1,4 +1,7 @@
-from project.models.pessoa import Pessoa
+
+import sys
+sys.path.append('../')
+from models.pessoa import Pessoa
 
 def insere_pessoa_no_banco_test():
     pessoa = Pessoa()
@@ -6,8 +9,8 @@ def insere_pessoa_no_banco_test():
     pessoa.campo_lname = 'de Mello Dantas'
     pessoa.criar()
 
-if __name__ == "__main__":
 
+def obter_pessoa_por_campos():
     pessoas = Pessoa().obter(onde = {'fname':'Asdrubal', 'lname':'de Mello Dantas'})
 
     for pessoa in pessoas:
@@ -15,6 +18,7 @@ if __name__ == "__main__":
     
     print("#------------------------------------#")
 
+def obter_todas_pessoas():
     pessoas = Pessoa().obter()
 
     for pessoa in pessoas:
@@ -22,7 +26,19 @@ if __name__ == "__main__":
 
     print("#------------------------------------#")
 
-    pessoa = Pessoa().obterPorId(1)
+
+def obter_pessoas_id():
+    pessoas = Pessoa().obter()
+    id = pessoas[0].campo_id
+
+    pessoa = Pessoa().obterPorId(id)
     print(pessoa)
 
     print("#------------------------------------#")
+
+if __name__ == "__main__":
+
+    # insere_pessoa_no_banco_test()
+    # obter_todas_pessoas()
+    # obter_pessoas_id()
+    # obter_pessoa_por_campos()

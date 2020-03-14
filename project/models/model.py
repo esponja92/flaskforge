@@ -1,5 +1,11 @@
 import sqlite3 as sql
-from project.repository.database import Database
+
+try:
+    from project.repository.database import Database
+except ImportError:
+    import sys
+    sys.path.append('../')
+    from repository.database import Database
 
 class Model(object):
 
@@ -36,14 +42,25 @@ class Model(object):
                 args.append(onde[key])
                 qtd_keys -= 1
 
+        # print(query_sql)
+        # print(args)
+
         rows = self.db.query_db(query_sql, args, one, header=True)
 
+        resultado = []
+
         if(one):
-            model = self.__class__([i for i in rows])
-            return model
+            cabecalho = rows[0]
+            row = rows[1]
+            novos_atributos = []
+
+
+            for i in range(len(cabecalho)):
+                novos_atributos.append(row[str(cabecalho[i])])
+
+            resultado = self.__class__(novos_atributos)
 
         else:
-            lista_resultados = []
             cabecalho = rows[0]
             for row in rows[1::]:
                 novos_atributos = []
@@ -51,9 +68,9 @@ class Model(object):
                     novos_atributos.append(row[str(cabecalho[i])])
 
                 model = self.__class__(novos_atributos)
-                lista_resultados.append(model)
-            
-            return lista_resultados
+                resultado.append(model)
+
+        return resultado
 
     def obterPorId(self, id):
         pessoa = self.obter(onde=({'id':id}),one=True)
@@ -74,6 +91,9 @@ class Model(object):
         valores = []
         for campo in campos:
             valores.append(self.__dict__[campo])
+
+        # print(query_sql)
+        # print(valores)
 
         self.db.execute(query_sql, valores)
 
@@ -112,6 +132,6 @@ class Model(object):
             query_sql += campos[-1] + ' = ?'
             valores.append(self.__dict__['campo_'+campos[-1]])
 
-        print(query_sql)
-        print(valores)
+        # print(query_sql)
+        # print(valores)
         self.db.execute(query_sql, valores)
