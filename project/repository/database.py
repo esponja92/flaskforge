@@ -31,7 +31,7 @@ class Database(object):
         cabecalho = [description[0] for description in cur.description]
         linhas = [row for row in cur.fetchall()]
         if(one):
-            linhas = [linhas[0]]
+            linhas = [linhas[0]] if len(linhas) else [[]]
         if(header):
             rv = [cabecalho] + linhas
         else:

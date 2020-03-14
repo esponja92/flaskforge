@@ -45,15 +45,17 @@ class Model(object):
         resultado = []
 
         if(one):
-            cabecalho = rows[0]
-            row = rows[1]
-            novos_atributos = []
+            if(len(rows[1])):
+                cabecalho = rows[0]
+                row = rows[1]
+                novos_atributos = []
 
+                for i in range(len(cabecalho)):
+                    novos_atributos.append(row[str(cabecalho[i])])
 
-            for i in range(len(cabecalho)):
-                novos_atributos.append(row[str(cabecalho[i])])
-
-            resultado = self.__class__(novos_atributos)
+                resultado = self.__class__(novos_atributos)
+            else:
+                resultado = None
 
         else:
             cabecalho = rows[0]
@@ -72,18 +74,18 @@ class Model(object):
 
         return pessoa
 
-    def criar(self, query_sql=''):
+    def criar(self):
 
+        query_sql=''
+        valores = []
         atributos_sem_id = [a for a in self.atributos]
         atributos_sem_id.remove('id')
 
-        if(query_sql == ''):
-            query_sql = 'INSERT INTO '+self.tabela+'('+','.join(atributos_sem_id)+') VALUES ('
-            query_sql += '?,'*(len(atributos_sem_id)-1) + "?"
-            query_sql += ')'
+        query_sql = 'INSERT INTO '+self.tabela+'('+','.join(atributos_sem_id)+') VALUES ('
+        query_sql += '?,'*(len(atributos_sem_id)-1) + "?"
+        query_sql += ')'
 
         campos = [k for k in self.__dict__.keys() if 'campo' in k]
-        valores = []
         for campo in campos:
             valores.append(self.__dict__[campo])
 
@@ -92,40 +94,39 @@ class Model(object):
 
         self.db.execute(query_sql, valores)
 
-    def atualizar(self, query_sql='', valores=[]):
+    def atualizar(self):
 
-        if(query_sql == ''):
-            atributos_sem_id = [a for a in self.atributos]
-            atributos_sem_id.remove('id')
-            query_sql = 'UPDATE ' + self.tabela + ' SET '
-            
-            campos = [k for k in atributos_sem_id]
-            valores = []
+        valores = []
+        query_sql = 'UPDATE ' + self.tabela + ' SET '
 
-            for campo in campos[0:-1]:
-                query_sql += campo + ' = ?, '
-                valores.append(self.__dict__['campo_'+campo])
-            
-            query_sql += campos[-1] + ' = ? WHERE id = ?'
-            valores.append(self.__dict__['campo_'+campos[-1]])
-            valores.append(self.campo_id)
+        atributos_sem_id = [a for a in self.atributos]
+        atributos_sem_id.remove('id')
+        
+        campos = [k for k in atributos_sem_id]
+
+        for campo in campos[0:-1]:
+            query_sql += campo + ' = ?, '
+            valores.append(self.__dict__['campo_'+campo])
+        
+        query_sql += campos[-1] + ' = ? WHERE id = ?'
+        valores.append(self.__dict__['campo_'+campos[-1]])
+        valores.append(self.campo_id)
 
         self.db.execute(query_sql, valores)
 
-    def deletar(self, query_sql='', valores=[]):
+    def deletar(self):
 
         valores = []
-        if(query_sql == ''):
-            query_sql = 'DELETE FROM '+self.tabela+' WHERE '
+        query_sql = 'DELETE FROM '+self.tabela+' WHERE '
 
-            campos = [k for k in self.atributos]
+        campos = [k for k in self.atributos]
 
-            for campo in campos[0:-1]:
-                query_sql += campo + ' = ? AND '
-                valores.append(self.__dict__['campo_'+campo])
-            
-            query_sql += campos[-1] + ' = ?'
-            valores.append(self.__dict__['campo_'+campos[-1]])
+        for campo in campos[0:-1]:
+            query_sql += campo + ' = ? AND '
+            valores.append(self.__dict__['campo_'+campo])
+        
+        query_sql += campos[-1] + ' = ?'
+        valores.append(self.__dict__['campo_'+campos[-1]])
 
         # print(query_sql)
         # print(valores)

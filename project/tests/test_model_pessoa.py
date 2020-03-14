@@ -1,12 +1,5 @@
 from project.models.pessoa import Pessoa
 
-def insere_pessoa_no_banco_test():
-    pessoa = Pessoa()
-    pessoa.campo_fname = 'Asdrubal'
-    pessoa.campo_lname = 'de Mello Dantas'
-    pessoa.criar()
-
-
 def obter_pessoa_por_campos():
     pessoas = Pessoa().obter(onde = {'fname':'Asdrubal', 'lname':'de Mello Dantas'})
 
@@ -25,14 +18,24 @@ def obter_todas_pessoas():
 
 
 def obter_pessoas_id(id):
-    
+
     pessoa = Pessoa().obterPorId(id)
     print(pessoa)
 
     print("#------------------------------------#")
 
-def atualizar_pessoa_por_id(id):
+def insere_pessoa_no_banco(fname,lname):
+    pessoa = Pessoa()
+    pessoa.campo_fname = fname
+    pessoa.campo_lname = lname
+    pessoa.criar()
+
+def atualizar_pessoa_por_id(id, fname, lname):
     pessoa = Pessoa().obterPorId(id)
-    pessoa.campo_fname = 'Novo'
-    pessoa.campo_lname = 'Cadastro'
+    pessoa.campo_fname = fname
+    pessoa.campo_lname = lname
     pessoa.atualizar()
+
+def deletar_pessoa_por_id(id):
+    pessoa = Pessoa().obterPorId(id)
+    pessoa.deletar()
