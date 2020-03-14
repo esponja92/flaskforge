@@ -1,10 +1,8 @@
 from project.models.pessoa import Pessoa
 
-def obter_pessoa_por_campos():
-    pessoas = Pessoa().obter(onde = {'fname':'Asdrubal', 'lname':'de Mello Dantas'})
-
-    for pessoa in pessoas:
-        print(pessoa)
+def obter_pessoa_por_campos(campos):
+    pessoa = Pessoa().obter(onde = campos, one = True)
+    return pessoa
     
     print("#------------------------------------#")
 
