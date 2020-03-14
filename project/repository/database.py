@@ -18,9 +18,6 @@ class Database(object):
 
     def query_db(self, query, args=(), one=False, header=False):
 
-        if (args != ()):
-            args = (args,)
-
         cur = self.get_db().execute(query, args)
         cabecalho = [description[0] for description in cur.description]
         linhas = [row for row in cur.fetchall()]

@@ -11,9 +11,31 @@ class Model(object):
     def __init__(self, valores=''):
         self.db = Database()
 
-    def obter(self, query_sql ='', args=(), one=False):
+    def __str__(self):
+        stringify = ''
+        for atributo in self.atributos:
+            stringify+= atributo+' = '+str(self.__dict__['campo_'+atributo])+' / '
+        return stringify
+
+    def obter(self, query_sql ='', onde = {}, one=False):
+
+        args = []
+
         if(query_sql == ''):
-            query_sql = 'SELECT ' + ','.join(self.atributos) + ' FROM '+self.tabela
+            query_sql = 'SELECT * FROM '+self.tabela
+
+        if(onde != {}):
+            query_sql += ' WHERE '
+            qtd_keys = len(onde.keys())
+
+            for key in onde.keys():
+                #testa se eh o ultimo elemento
+                if(qtd_keys > 1):
+                    query_sql += key + ' = ? AND '
+                else:
+                    query_sql += key + ' = ?'
+                args.append(onde[key])
+                qtd_keys -= 1
 
         rows = self.db.query_db(query_sql, args, one, header=False)
 
