@@ -14,5 +14,5 @@ if __name__ == "__main__":
 
     pessoa.deletar()
 
-    pessoa = Pessoa().obter({'fname':'Hebe','lname':'Camargo'}, one=True)
+    pessoa = Pessoa().obter({'fname':'Hebe','lname':'Camargo'})
     print(pessoa)

@@ -3,7 +3,7 @@
 Este projeto contêm
 
 1) uma ferramenta para geração de tabelas em um banco SQLite3
-2) uma API simples de acesso a este banco criado
+2) uma biblioteca simples para ORM
 
 Para rodar a aplicação de exemplo:
 
@@ -14,4 +14,12 @@ Para rodar a aplicação de exemplo:
 
 $ python3 app.py
 
-e acesse o endereço 127.0.0.1:5000/
+e acesse o endereço localhost:8000/
+
+O Model Pessoa deve conter atributos começando com "campo_" e seguidos dos nomes das colunas
+da tabela pessoa:
+	- campo_fname = 'Nome inicial'
+	- campo_lname = 'Nome final'
+
+CRÉDITOS:
+	- estrutura do projecto MVC baseada no projeto em https://github.com/indhifarhandika/flask-mvc
