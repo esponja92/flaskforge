@@ -1,1 +1,0 @@
-DATABASE_PATH = '/home/hugo/flaskforge/flaskforge/database.db'

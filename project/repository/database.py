@@ -2,12 +2,12 @@ import sqlite3 as sql
 import os
 from .database_singleton import DatabaseSingleton
 
-from project.config.env import *
+# from project.config.env import *
 
 @DatabaseSingleton
 class Database(object):
 
-    DATABASE = DATABASE_PATH
+    DATABASE = 'database.db'
     db = None
 
     def __init__(self):
