@@ -17,12 +17,11 @@ class Model(object):
             stringify+= atributo+' = '+str(self.__dict__['campo_'+atributo])+' / '
         return stringify
 
-    def obter(self, query_sql ='', onde = {}, one=False):
+    def obter(self, onde = {}, one=False):
 
         args = []
 
-        if(query_sql == ''):
-            query_sql = 'SELECT * FROM '+self.tabela
+        query_sql = 'SELECT * FROM '+self.tabela
 
         if(onde != {}):
             query_sql += ' WHERE '
@@ -37,7 +36,7 @@ class Model(object):
                 args.append(onde[key])
                 qtd_keys -= 1
 
-        rows = self.db.query_db(query_sql, args, one, header=False)
+        rows = self.db.query_db(query_sql, args, one, header=True)
 
         if(one):
             model = self.__class__([i for i in rows])
@@ -45,15 +44,19 @@ class Model(object):
 
         else:
             lista_resultados = []
-            for row in rows:
+            cabecalho = rows[0]
+            for row in rows[1::]:
+                novos_atributos = []
+                for i in range(len(cabecalho)):
+                    novos_atributos.append(row[str(cabecalho[i])])
 
-                model = self.__class__([i for i in row])
+                model = self.__class__(novos_atributos)
                 lista_resultados.append(model)
             
             return lista_resultados
 
     def obterPorId(self, id):
-        pessoa = self.obter('SELECT * FROM '+self.tabela+' WHERE id = ?',(id),one=True)
+        pessoa = self.obter(onde=({'id':id}),one=True)
 
         return pessoa
 

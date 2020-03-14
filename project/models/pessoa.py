@@ -2,11 +2,11 @@ from project.models.model import Model
 
 class Pessoa(Model):
 
-    def __init__(self, valores=''):
+    def __init__(self, valores=[]):
         self.atributos = ['id','fname','lname']
         self.tabela = 'pessoa'
         
-        if(valores == ''):
+        if(valores == []):
             self.campo_fname = ''
             self.campo_lname = ''
         else:

@@ -8,14 +8,21 @@ def insere_pessoa_no_banco_test():
 
 if __name__ == "__main__":
 
-    pessoas_obtidas = Pessoa().obter(onde = {'fname':'Asdrubal', 'lname':'de Mello Dantas'})
+    pessoas = Pessoa().obter(onde = {'fname':'Asdrubal', 'lname':'de Mello Dantas'})
 
-    for pessoa in pessoas_obtidas:
+    for pessoa in pessoas:
         print(pessoa)
     
     print("#------------------------------------#")
-    
-    pessoas_obtidas = Pessoa().obter()
 
-    for pessoa in pessoas_obtidas:
+    pessoas = Pessoa().obter()
+
+    for pessoa in pessoas:
         print(pessoa)
+
+    print("#------------------------------------#")
+
+    pessoa = Pessoa().obterPorId(1)
+    print(pessoa)
+
+    print("#------------------------------------#")
