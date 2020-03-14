@@ -51,3 +51,4 @@ class Database(object):
         db = self.get_db()
         db.execute(query, args)
         db.commit()
+        self.close_db(cur)
