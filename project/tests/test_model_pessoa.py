@@ -24,11 +24,15 @@ def obter_todas_pessoas():
     print("#------------------------------------#")
 
 
-def obter_pessoas_id():
-    pessoas = Pessoa().obter()
-    id = pessoas[0].campo_id
-
+def obter_pessoas_id(id):
+    
     pessoa = Pessoa().obterPorId(id)
     print(pessoa)
 
     print("#------------------------------------#")
+
+def atualizar_pessoa_por_id(id):
+    pessoa = Pessoa().obterPorId(id)
+    pessoa.campo_fname = 'Novo'
+    pessoa.campo_lname = 'Cadastro'
+    pessoa.atualizar()

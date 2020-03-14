@@ -39,8 +39,7 @@ def atualizar():
     lname = request.form.get('lname')
 
     try:
-        pessoa = Pessoa()
-        pessoa.campo_id = id
+        pessoa = Pessoa().obterPorId(id)
         pessoa.campo_fname = fname
         pessoa.campo_lname = lname
         pessoa.atualizar()

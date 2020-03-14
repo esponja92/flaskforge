@@ -6,3 +6,5 @@ if __name__ == "__main__":
     obter_todas_pessoas()
     # obter_pessoas_id()
     # obter_pessoa_por_campos()
+    # atualizar_pessoa_por_id(7)
+    # obter_pessoas_id(7)
