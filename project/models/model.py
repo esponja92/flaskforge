@@ -15,7 +15,7 @@ class Model(object):
         campos = ['campo_'+campo for campo in self.atributos]
         for i in range(len(campos)):
             chave = self.atributos[i]
-            valor = self.__obtemCampo(campos[i], string=True)
+            valor = self.__obtemValorDoCampo(campos[i], string=True)
             stringify += chave+' = '+valor+' / '
             
         return stringify
@@ -30,7 +30,7 @@ class Model(object):
         model = self.__class__(novos_atributos)
         return model
 
-    def __obtemCampo(self,campo, string=False):
+    def __obtemValorDoCampo(self,campo, string=False):
         campos = self.__obtemCampos()
         campo = campos[campo]
         if(string):
@@ -125,7 +125,7 @@ class Model(object):
             else:
                 query_sql += '{campo} = ? WHERE id = ?'.format(campo=campos[-1])
 
-            valores.append(self.__obtemCampo('campo_'+campo))
+            valores.append(self.__obtemValorDoCampo('campo_'+campo))
             qtd_keys-=1        
 
         valores.append(self.campo_id)
@@ -138,7 +138,7 @@ class Model(object):
     def deletar(self):
 
         valores = []
-        query_sql = 'DELETE FROM '+self.tabela+' WHERE '
+        query_sql = 'DELETE FROM {tabela} WHERE '.format(tabela=self.tabela)
 
         campos = [k for k in self.atributos]
         qtd_keys = len(campos)
@@ -146,10 +146,10 @@ class Model(object):
         for campo in campos:
             #testa se eh o ultimo elemento
             if(qtd_keys > 1):
-                query_sql += campo + ' = ? AND '
+                query_sql += '{campo} = ? AND '.format(campo=campo)
             else:
-                query_sql += campos[-1] + ' = ?'
-            valores.append(self.__obtemCampo('campo_'+campo))
+                query_sql += '{campo} = ?'.format(campo=campos[-1])
+            valores.append(self.__obtemValorDoCampo('campo_'+campo))
             qtd_keys-=1
 
         # print(query_sql)
