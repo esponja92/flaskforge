@@ -7,7 +7,6 @@ if __name__ == "__main__":
     obter_pessoa_por_campos({'fname':'silvio','lname':'santos'})
 
     pessoa = Pessoa().obter({'fname':'silvio','lname':'santos'},one=True)
-    print(pessoa)
     atualizar_pessoa_por_id(pessoa.campo_id, 'Hebe','Camargo')
 
     obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})

@@ -12,19 +12,36 @@ class Model(object):
 
     def __str__(self):
         stringify = ''
-        for atributo in self.atributos:
-            stringify+= atributo+' = '+str(self.__dict__['campo_'+atributo])+' / '
+        campos = ['campo_'+campo for campo in self.atributos]
+        for i in range(len(campos)):
+            chave = self.atributos[i]
+            valor = self.__obtemCampo(campos[i], string=True)
+            stringify += chave+' = '+valor+' / '
+            
         return stringify
 
     def __row_to_model(self, row, cabecalho):
 
         novos_atributos = []
-        for i in range(len(cabecalho)):
+        for coluna in cabecalho:
 
-            novos_atributos.append(row[cabecalho[i]])
+            novos_atributos.append(row[coluna])
 
         model = self.__class__(novos_atributos)
         return model
+
+    def __obtemCampo(self,campo, string=False):
+        campos = self.__obtemCampos()
+        campo = campos[campo]
+        if(string):
+            campo = str(campo)
+        return campo
+
+    def __obtemCampos(self):
+        campos = [k for k in self.__dict__.keys() if 'campo_' in k]
+        atributos = { campo: self.__dict__[campo] for campo in campos }
+
+        return atributos
 
     def obter(self, onde = {}, one=False):
 
@@ -37,7 +54,7 @@ class Model(object):
             qtd_keys = len(onde.keys())
 
             for key in onde.keys():
-                #testa se eh o ultimo elemento, para colocar o AND conforme o caso
+                #testa se eh o ultimo elemento
                 if(qtd_keys > 1):
                     query_sql += '{parametro} = ? AND '.format(parametro=key)
                 else:
@@ -81,9 +98,8 @@ class Model(object):
             valores='?,'*(len(atributos_sem_id)-1) + "?"
         )
 
-        campos = [k for k in self.__dict__.keys() if 'campo_' in k]
-        for campo in campos:
-        # for campo in atributos_sem_id:
+        campos = self.__obtemCampos()
+        for campo in campos.keys():
             valores.append(self.__dict__[campo])
 
         # print(query_sql)
@@ -94,20 +110,28 @@ class Model(object):
     def atualizar(self):
 
         valores = []
-        query_sql = 'UPDATE ' + self.tabela + ' SET '
+        query_sql = 'UPDATE {tabela} SET '.format(tabela=self.tabela)
 
         atributos_sem_id = [a for a in self.atributos]
         atributos_sem_id.remove('id')
         
         campos = [k for k in atributos_sem_id]
+        qtd_keys = len(campos)
 
-        for campo in campos[0:-1]:
-            query_sql += campo + ' = ?, '
-            valores.append(self.__dict__['campo_'+campo])
-        
-        query_sql += campos[-1] + ' = ? WHERE id = ?'
-        valores.append(self.__dict__['campo_'+campos[-1]])
+        for campo in campos:
+            #testa se eh o ultimo elemento
+            if(qtd_keys > 1):
+                query_sql += '{campo} = ?,'.format(campo=campo)
+            else:
+                query_sql += '{campo} = ? WHERE id = ?'.format(campo=campos[-1])
+
+            valores.append(self.__obtemCampo('campo_'+campo))
+            qtd_keys-=1        
+
         valores.append(self.campo_id)
+
+        # print(query_sql)
+        # print(valores)
 
         self.db.execute(query_sql, valores)
 
@@ -117,13 +141,16 @@ class Model(object):
         query_sql = 'DELETE FROM '+self.tabela+' WHERE '
 
         campos = [k for k in self.atributos]
+        qtd_keys = len(campos)
 
-        for campo in campos[0:-1]:
-            query_sql += campo + ' = ? AND '
-            valores.append(self.__dict__['campo_'+campo])
-        
-        query_sql += campos[-1] + ' = ?'
-        valores.append(self.__dict__['campo_'+campos[-1]])
+        for campo in campos:
+            #testa se eh o ultimo elemento
+            if(qtd_keys > 1):
+                query_sql += campo + ' = ? AND '
+            else:
+                query_sql += campos[-1] + ' = ?'
+            valores.append(self.__obtemCampo('campo_'+campo))
+            qtd_keys-=1
 
         # print(query_sql)
         # print(valores)
