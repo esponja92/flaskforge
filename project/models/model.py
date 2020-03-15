@@ -83,7 +83,7 @@ class Model(object):
         query_sql += '?,'*(len(atributos_sem_id)-1) + "?"
         query_sql += ')'
 
-        campos = [k for k in self.__dict__.keys() if 'campo' in k]
+        campos = [k for k in self.__dict__.keys() if 'campo_' in k]
         for campo in campos:
             valores.append(self.__dict__[campo])
 
