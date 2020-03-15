@@ -75,12 +75,15 @@ class Model(object):
         atributos_sem_id = [a for a in self.atributos]
         atributos_sem_id.remove('id')
 
-        query_sql = 'INSERT INTO '+self.tabela+'('+','.join(atributos_sem_id)+') VALUES ('
-        query_sql += '?,'*(len(atributos_sem_id)-1) + "?"
-        query_sql += ')'
+        query_sql = 'INSERT INTO {tabela} ({atributos}) VALUES ({valores})'.format(
+            tabela=self.tabela,
+            atributos=','.join(atributos_sem_id),
+            valores='?,'*(len(atributos_sem_id)-1) + "?"
+        )
 
         campos = [k for k in self.__dict__.keys() if 'campo_' in k]
         for campo in campos:
+        # for campo in atributos_sem_id:
             valores.append(self.__dict__[campo])
 
         # print(query_sql)

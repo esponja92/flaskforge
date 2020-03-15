@@ -4,16 +4,16 @@ if __name__ == "__main__":
 
     insere_pessoa_no_banco('silvio','santos')
 
-    pessoa = obter_pessoa_por_campos({'fname':'silvio','lname':'santos'})
-    print(pessoa)
+    obter_pessoa_por_campos({'fname':'silvio','lname':'santos'})
 
+    pessoa = Pessoa().obter({'fname':'silvio','lname':'santos'},one=True)
+    print(pessoa)
     atualizar_pessoa_por_id(pessoa.campo_id, 'Hebe','Camargo')
 
-    pessoa = obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})
-    print(pessoa)
+    obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})
+    pessoa = Pessoa().obter({'fname':'Hebe','lname':'Camargo'},one=True)
 
     if(pessoa):
         pessoa.deletar()
 
     pessoa = obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})
-    print(pessoa)
