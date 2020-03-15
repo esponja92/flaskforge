@@ -1,8 +1,5 @@
 import sqlite3 as sql
-import os
 from .database_singleton import DatabaseSingleton
-
-# from project.config.env import *
 
 @DatabaseSingleton
 class Database(object):

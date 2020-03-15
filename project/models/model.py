@@ -1,5 +1,3 @@
-import sqlite3 as sql
-
 from project.repository.database import Database
 
 class Model(object):
