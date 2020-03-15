@@ -2,13 +2,17 @@ from project.repository.database import Database
 
 class Model(object):
 
-    atributos = []
-    database = ''
-    tabela = ''
-    campo_id = ''
-
-    def __init__(self, valores=''):
+    def __init__(self, tabela, atributos,valores):
+        self.tabela = tabela
+        self.atributos = atributos
         self.db = Database.getInstance()
+        
+        for i in range(len(self.atributos)):
+            if(len(valores)):
+                self.__dict__['campo_'+atributos[i]] = valores[i]
+            else:
+                if(atributos[i] != 'id'):
+                    self.__dict__['campo_'+atributos[i]] = ''
 
     def __str__(self):
         stringify = ''
