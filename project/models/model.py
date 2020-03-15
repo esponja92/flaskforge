@@ -16,22 +16,32 @@ class Model(object):
             stringify+= atributo+' = '+str(self.__dict__['campo_'+atributo])+' / '
         return stringify
 
+    def __row_to_model(self, row, cabecalho):
+
+        novos_atributos = []
+        for i in range(len(cabecalho)):
+
+            novos_atributos.append(row[cabecalho[i]])
+
+        model = self.__class__(novos_atributos)
+        return model
+
     def obter(self, onde = {}, one=False):
 
         args = []
 
-        query_sql = 'SELECT * FROM '+self.tabela
+        query_sql = 'SELECT * FROM {tabela}'.format(tabela=self.tabela) 
 
         if(onde != {}):
             query_sql += ' WHERE '
             qtd_keys = len(onde.keys())
 
             for key in onde.keys():
-                #testa se eh o ultimo elemento
+                #testa se eh o ultimo elemento, para colocar o AND conforme o caso
                 if(qtd_keys > 1):
-                    query_sql += key + ' = ? AND '
+                    query_sql += '{parametro} = ? AND '.format(parametro=key)
                 else:
-                    query_sql += key + ' = ?'
+                    query_sql += '{parametro} = ?'.format(parametro=key)
                 args.append(onde[key])
                 qtd_keys -= 1
 
@@ -39,30 +49,16 @@ class Model(object):
         # print(args)
 
         rows = self.db.query_db(query_sql, args, one, header=True)
-
         resultado = []
 
-        if(one):
-            if(len(rows[1])):
-                cabecalho = rows[0]
-                row = rows[1]
-                novos_atributos = []
-
-                for i in range(len(cabecalho)):
-                    novos_atributos.append(row[str(cabecalho[i])])
-
-                resultado = self.__class__(novos_atributos)
+        cabecalho = rows[0]
+        for row in rows[1::]:
+            # print(row)
+            if(one):
+                if(row):
+                    return self.__row_to_model(row,cabecalho)
             else:
-                resultado = None
-
-        else:
-            cabecalho = rows[0]
-            for row in rows[1::]:
-                novos_atributos = []
-                for i in range(len(cabecalho)):
-                    novos_atributos.append(row[str(cabecalho[i])])
-
-                model = self.__class__(novos_atributos)
+                model = self.__row_to_model(row,cabecalho)
                 resultado.append(model)
 
         return resultado

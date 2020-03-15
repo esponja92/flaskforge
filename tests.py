@@ -12,7 +12,8 @@ if __name__ == "__main__":
     pessoa = obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})
     print(pessoa)
 
-    pessoa.deletar()
+    if(pessoa):
+        pessoa.deletar()
 
     pessoa = obter_pessoa_por_campos({'fname':'Hebe','lname':'Camargo'})
     print(pessoa)

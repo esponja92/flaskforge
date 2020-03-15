@@ -2,7 +2,7 @@ from project.models.pessoa import Pessoa
 
 def obter_pessoa_por_campos(campos):
     pessoa = Pessoa().obter(onde = campos, one = True)
-    return pessoa
+    print(pessoa)
     
     print("#------------------------------------#")
 
